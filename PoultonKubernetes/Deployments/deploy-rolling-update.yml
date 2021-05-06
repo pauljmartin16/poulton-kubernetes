@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deploy
+  labels:
+    app: web
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      name: web
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        name: web
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: hello-pod
+        image: pauljmartin16/getting-starged-k8s:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
